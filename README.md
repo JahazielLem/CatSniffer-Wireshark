@@ -33,3 +33,5 @@ You may now build the plugin target alone witout having to compile the full Wire
 ```bash
 cmake --build build --target catsniffer
 ```
+# Speciall thanks for contribution:
+  - Antonio Vázquez Blanco <antoniovazquezblanco@gmail.com>
