@@ -36,7 +36,8 @@ jobs:
         path: wireshark/plugins/epan/catsniffer
         fetch-depth: 0
     
-    - name: Keep the folder catsniffer
+    - name: Keep the folder catsniffer (Unix)
+      if: matrix.sys.os != 'windows'
       run: |
         cd wireshark/plugins/epan/catsniffer
         git sparse-checkout init --cone
@@ -45,13 +46,24 @@ jobs:
         mv catsniffer/* .
         rm -r catsniffer
     
+    - name: Keep the folder catsniffer (Windows)
+      if: matrix.sys.os == 'windows'
+      run: |
+        cd wireshark/plugins/epan/catsniffer
+        git sparse-checkout init --cone
+        git sparse-checkout set catsniffer
+        git checkout
+        robocopy catsniffer . /E /MOVE
+        rmdir /S /Q catsniffer
+    
     - name: Checkout CatSniffer SX1262 Plugin
       uses: actions/checkout@v4
       with:
         path: wireshark/plugins/epan/catsniffersx1262
         fetch-depth: 0
     
-    - name: Keep the folder catsniffersx1262
+    - name: Keep the folder catsniffersx1262 (Unix)
+      if: matrix.sys.os != 'windows'
       run: |
         cd wireshark/plugins/epan/catsniffersx1262
         git sparse-checkout init --cone
@@ -59,6 +71,16 @@ jobs:
         git checkout
         mv catsniffersx1262/* .
         rm -r catsniffersx1262
+      
+    - name: Keep the folder catsniffersx1262 (Windows)
+      if: matrix.sys.os == 'windows'
+      run: |
+        cd wireshark/plugins/epan/catsniffersx1262
+        git sparse-checkout init --cone
+        git sparse-checkout set catsniffersx1262
+        git checkout
+        robocopy catsniffersx1262 . /E /MOVE
+        rmdir /S /Q catsniffersx1262
 
     - name: Install dependencies (Ubuntu)
       if: matrix.sys.os == 'ubuntu'
