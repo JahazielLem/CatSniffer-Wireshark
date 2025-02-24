@@ -69,8 +69,8 @@ jobs:
       env:
         DESTDIR: ${{ github.workspace }}/dist
       run: |
-        cmake --build build --target plugins/epan/catsniffer/install
-        cmake --build build --target plugins/epan/catsniffersx1262/install
+        cmake --build build --target plugins/epan/cats/catsniffer/install
+        cmake --build build --target plugins/epan/cats/catsniffersx1262/install
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
