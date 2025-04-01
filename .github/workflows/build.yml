@@ -78,17 +78,17 @@ jobs:
 
     - name: Create ZIP archive
       run: |
-        zip -r CatSniffer_Wireshark${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip dist/
+        zip -r CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip dist/
       shell: bash
+    
+    - name: List downloaded files
+      run: ls
 
     - name: Upload ZIP artifact
       uses: actions/upload-artifact@v4
       with:
         name: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}
         path: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip
-    
-    - name: List downloaded files
-      run: ls
 
     - name: Release
       uses: ncipollo/release-action@v1
