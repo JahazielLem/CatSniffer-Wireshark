@@ -84,8 +84,8 @@ jobs:
     - name: Upload ZIP artifact
       uses: actions/upload-artifact@v4
       with:
-        name: CatSniffer_Wireshark_Zips
-        path: CatSniffer_Wireshark${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip
+        name: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}
+        path: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip
 
   release:
     needs: build
@@ -96,6 +96,9 @@ jobs:
       with:
         name: CatSniffer_Wireshark_Zips
         path: ./release_zips/
+    
+    - name: List downloaded files
+      run: ls -lh ./release_zips/
 
     - name: Release
       uses: ncipollo/release-action@v1
