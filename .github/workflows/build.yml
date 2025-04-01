@@ -86,22 +86,12 @@ jobs:
       with:
         name: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}
         path: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download all ZIP artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: CatSniffer_Wireshark_Zips
-        path: ./release_zips/
     
     - name: List downloaded files
-      run: ls -lh ./release_zips/
+      run: ls
 
     - name: Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: release_zips/*.zip
+        artifacts: *.zip
         generateReleaseNotes: true
