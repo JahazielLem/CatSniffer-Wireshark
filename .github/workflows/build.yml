@@ -3,10 +3,10 @@ on:
   push:
     tags:
       - "v*"
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  workflow_dispatch:
+    # branches: ["main"]
+  # pull_request:
+  #   branches: ["main"]
+  # workflow_dispatch:
 
 jobs:
   build:
