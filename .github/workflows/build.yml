@@ -85,7 +85,7 @@ jobs:
     - name: Download release files
       uses: actions/download-artifact@v4
       with:
-        name: dissector
+        name: CatSniffer_Wireshark${{ matrix.wireshark }}_${{ matrix.sys.os }}
         path: ./dist/
 
     - name: Release
