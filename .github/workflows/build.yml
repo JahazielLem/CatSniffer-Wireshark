@@ -104,9 +104,6 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: ./release_zips/
-    
-    - name: List downloaded files
-      run: ls -lh /release_zips/
 
     - name: Release
       uses: ncipollo/release-action@v1
