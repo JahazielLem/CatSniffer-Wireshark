@@ -76,7 +76,13 @@ jobs:
       run: |
         cmake --build build --target plugins/epan/catsniffer/install
 
-    - name: Create ZIP archive
+    # - name: Create ZIP archive
+    - name: Create ZIP archive (Windows)
+      if: matrix.sys.os == 'windows'
+      run: tar -czf CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.tar.gz -C dist .
+  
+    - name: Create ZIP archive (Linux/macOS)
+      if: matrix.sys.os != 'windows'
       run: |
         zip -r CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip dist/
       shell: bash
