@@ -103,14 +103,14 @@ jobs:
     - name: Download all ZIP artifacts
       uses: actions/download-artifact@v4
       with:
-        name: CatSniffer_Wireshark_*
         path: ./release_zips/
     
     - name: List downloaded files
-      run: ls
+      run: ls -lh /release_zips/
 
     - name: Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: release_zips/*.zip
+        artifacts: release_zips/*
         generateReleaseNotes: true
+        draft: true
