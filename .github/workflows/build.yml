@@ -1,7 +1,12 @@
 name: Build
 on: 
   push:
-    branches: ["dev", "main"]
+    tags:
+      - "v*"
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,7 +20,8 @@ jobs:
           - v4.4.0
 
     runs-on: ${{ matrix.sys.os }}-latest
-
+    permissions:
+      contents: write
     defaults:
       run:
         shell: ${{ matrix.sys.shell }}
@@ -32,7 +38,7 @@ jobs:
     - name: Checkout CatSniffer Plugin
       uses: actions/checkout@v4
       with:
-        path: wireshark/plugins/epan/cats
+        path: wireshark/plugins/epan/catsniffer
         fetch-depth: 0
 
     - name: Install dependencies (Ubuntu)
@@ -58,22 +64,28 @@ jobs:
       run: wireshark/tools/msys2-setup.sh --install-all --noconfirm
 
     - name: Configure
-      run: cmake -B build -S wireshark -G Ninja -DCUSTOM_PLUGIN_SRC_DIR=plugins/epan/cats -DCMAKE_INSTALL_PREFIX=/
+      run: cmake -B build -S wireshark -G Ninja -DCUSTOM_PLUGIN_SRC_DIR=plugins/epan/catsniffer -DCMAKE_INSTALL_PREFIX=/
 
     - name: Build
       run: |
         cmake --build build --target catsniffer
-        cmake --build build --target catsniffersx1262
 
     - name: Install
       env:
         DESTDIR: ${{ github.workspace }}/dist
       run: |
-        cmake --build build --target plugins/epan/cats/catsniffer/install
-        cmake --build build --target plugins/epan/cats/catsniffersx1262/install
+        cmake --build build --target plugins/epan/catsniffer/install
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
+      # if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
       with:
         name: CatSniffer_Wireshark${{ matrix.wireshark }}_${{ matrix.sys.os }}
         path: dist/
+    
+    - name: Release
+      uses: ncipollo/release-action@v1
+      # if: startsWith(github.ref, 'refs/tags/v') 
+      with:
+        artifacts: dist/*
+        generateReleaseNotes: true
