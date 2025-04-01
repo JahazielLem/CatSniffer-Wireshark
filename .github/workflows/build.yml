@@ -104,10 +104,13 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: ./release_zips/
+    
+    - name: List downloaded files
+      run: ls -lh ./release_zips/
 
     - name: Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: release_zips/*
+        artifacts: ./release_zips/*.*
         generateReleaseNotes: true
         draft: true
