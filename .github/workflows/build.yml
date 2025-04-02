@@ -95,14 +95,14 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.tar.gz
-        path: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.tar.gz
+        path: ./CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.tar.gz
   
     - name: Upload ZIP artifact (Windows)
       if: matrix.sys.os != 'windows'
       uses: actions/upload-artifact@v4
       with:
         name: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip
-        path: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip
+        path: ./CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip
 
   release:
     needs: build
@@ -122,6 +122,6 @@ jobs:
     - name: Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: ./release_zips/*.*
+        artifacts: ./release_zips/*/*
         generateReleaseNotes: true
         draft: true
