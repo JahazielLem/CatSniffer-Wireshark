@@ -3,10 +3,10 @@ on:
   push:
     tags:
       - "v*"
-    # branches: ["main"]
-  # pull_request:
-  #   branches: ["main"]
-  # workflow_dispatch:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -76,7 +76,6 @@ jobs:
       run: |
         cmake --build build --target plugins/epan/catsniffer/install
 
-    # - name: Create ZIP archive
     - name: Create ZIP archive (Windows)
       if: matrix.sys.os == 'windows'
       run: tar -czf CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.tar.gz -C dist .
@@ -86,9 +85,6 @@ jobs:
       run: |
         zip -r CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip dist/
       shell: bash
-    
-    - name: List downloaded files
-      run: ls
 
     - name: Upload ZIP artifact (Windows)
       if: matrix.sys.os == 'windows'
@@ -97,7 +93,7 @@ jobs:
         name: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.tar.gz
         path: ./CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.tar.gz
   
-    - name: Upload ZIP artifact (Windows)
+    - name: Upload ZIP artifact (Linux/Macos)
       if: matrix.sys.os != 'windows'
       uses: actions/upload-artifact@v4
       with:
@@ -106,18 +102,16 @@ jobs:
 
   release:
     needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
-    - name: List downloaded files
-      run: ls
+    - name: Checkout repository
+      uses: actions/checkout@v4
     
     - name: Download all ZIP artifacts
       uses: actions/download-artifact@v4
       with:
         path: ./release_zips/
-    
-    - name: List downloaded files
-      run: ls -lh ./release_zips/
 
     - name: Release
       uses: ncipollo/release-action@v1
