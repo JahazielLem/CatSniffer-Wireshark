@@ -86,6 +86,9 @@ jobs:
       run: |
         zip -r CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip dist/
       shell: bash
+    
+    - name: List downloaded files
+      run: ls
 
     - name: Upload ZIP artifact
       uses: actions/upload-artifact@v4
