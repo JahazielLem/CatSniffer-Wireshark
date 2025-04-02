@@ -90,11 +90,19 @@ jobs:
     - name: List downloaded files
       run: ls
 
-    - name: Upload ZIP artifact
+    - name: Upload ZIP artifact (Windows)
+      if: matrix.sys.os == 'windows'
       uses: actions/upload-artifact@v4
       with:
-        name: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}
-        path: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.*
+        name: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.tar.gz
+        path: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.tar.gz
+  
+    - name: Upload ZIP artifact (Windows)
+      if: matrix.sys.os != 'windows'
+      uses: actions/upload-artifact@v4
+      with:
+        name: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip
+        path: CatSniffer_Wireshark_${{ matrix.wireshark }}_${{ matrix.sys.os }}.zip
 
   release:
     needs: build
