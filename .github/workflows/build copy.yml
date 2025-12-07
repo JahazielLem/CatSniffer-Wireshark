@@ -1,4 +1,4 @@
-name: Build 4.4
+name: Build 4.6
 on: 
   push:
     tags:
@@ -17,7 +17,7 @@ jobs:
           - { os: ubuntu,  shell: bash  }
           - { os: macos,   shell: bash  }
         wireshark:
-          - v4.4.0
+          - v4.6.0
 
     runs-on: ${{ matrix.sys.os }}-latest
     permissions:
